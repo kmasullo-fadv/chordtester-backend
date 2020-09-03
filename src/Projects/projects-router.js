@@ -19,19 +19,44 @@ projectsRouter
         .catch(next);
     })
     .post(requireAuth, jsonParser, (req, res, next) => {
-        console.log(req.body);
-        const { title, chords } = req.body;
-        const details = { title, chords }
+        const { title } = req.body;
         projectsService.addProject(
             req.app.get('db'),
             req.user.username,
-            details
+            title
         )
         .then(project => {
             res.json(project)
         })
         .catch(next);
-    })
+    });
+
+    projectsRouter
+        .route('/projects/:id')
+        .get(requireAuth, (req, res, next) => {
+            projectsService.getProjectById(
+                req.app.get('db'),
+                req.user.username,
+                req.params.id
+            )
+            .then(project => {
+                res.json(project)
+            })
+            .catch(next)
+        })
+        .post(requireAuth, jsonParser, (req, res, next) => {
+            const { project_id, notes, name } = req.body;
+            const details = { project_id, notes, name };
+            projectsService.addChordtoProject(
+                req.app.get('db'),
+                req.user.username,
+                details
+            )
+            .then(project => {
+                res.json(project)
+            })
+            .catch(next)
+        })
 
 
 module.exports = projectsRouter;

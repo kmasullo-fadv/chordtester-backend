@@ -1,5 +1,5 @@
-INSERT INTO user_project (username, title, chords)
+INSERT INTO user_projects (username, title)
 VALUES
-('fonz', 'Song1', 'Chord1, Chord2'),
-('fonz', 'Song2', 'Chord1, Chord2'),
-('fonz', 'Song3', 'Chord1, Chord2')
+('fonz', 'Song1'),
+('fonz', 'Song2'),
+('fonz', 'Song3')

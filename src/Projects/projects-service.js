@@ -2,17 +2,34 @@ const knex = require('knex');
 
 const projectsService = {
     getAllProjects (db, username) {
-        return db.from('user_project')
+        return db.from('user_projects')
         .where('username', username)
     },
-    addProject (db, username, details) {
+    getProjectById (db, username, id) {
+        return db.from('user_projects')
+        .where('username', username)
+        .where('id', id)
+    },
+    addProject (db, username, title) {
         return db
         .insert({
             username: username,
-            title: details.title,
-            chords: details.chords
+            title: title
         })
-        .into('user_project')
+        .into('user_projects')
+        .returning('*')
+        .then(rows => {
+            return rows[0]
+        })
+    },
+    addChordtoProject (db, username, details) {
+        return db
+        .insert({
+            name: details.name,
+            project_id: details.project_id,
+            notes: details.notes
+        })
+        .into('project_chords')
     }
 }
 
