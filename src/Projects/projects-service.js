@@ -6,10 +6,9 @@ const projectsService = {
         .where('username', username)
     },
     getProjectById (db, username, id) {
-        return db.from('user_projects')
-        .where('username', username)
-        .where('user_projects.id', id)
-        .leftJoin('project_chords', 'project_chords.project_id', 'user_projects.id')
+        return db.from('project_chords')
+        .where('project_chords.project_id', id)
+        
     },
     addProject (db, username, title) {
         return db

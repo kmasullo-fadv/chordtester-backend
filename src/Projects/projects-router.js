@@ -39,14 +39,18 @@ projectsRouter
                 req.user.username,
                 req.params.id
             )
-            .then(project => {
-                res.json(project)
+            .then(chords => {
+                res.json(chords.map(chord => ({
+                    ...chord,
+                    notes: JSON.parse(chord.notes)
+                })))
             })
             .catch(next)
         })
         .post(requireAuth, jsonParser, (req, res, next) => {
             const { project_id, notes, name } = req.body;
-            const details = { project_id, notes, name };
+            const notesJson = JSON.stringify(notes)
+            const details = { project_id, notes: notesJson, name };
             projectsService.addChordtoProject(
                 req.app.get('db'),
                 req.user.username,
