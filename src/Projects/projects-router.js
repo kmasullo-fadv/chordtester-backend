@@ -57,6 +57,14 @@ projectsRouter
             })
             .catch(next)
         })
+        .delete(requireAuth, (req,res, next) => {
+            projectsService.deleteProjectById(
+                req.app.get('db'),
+                req.params.id
+            )
+            .then(res.status(204).end())
+            .catch(next)
+        })
 
 
 module.exports = projectsRouter;

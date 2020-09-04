@@ -8,7 +8,8 @@ const projectsService = {
     getProjectById (db, username, id) {
         return db.from('user_projects')
         .where('username', username)
-        .where('id', id)
+        .where('user_projects.id', id)
+        .leftJoin('project_chords', 'project_chords.project_id', 'user_projects.id')
     },
     addProject (db, username, title) {
         return db
@@ -30,6 +31,11 @@ const projectsService = {
             notes: details.notes
         })
         .into('project_chords')
+    },
+    deleteProjectById (db, id) {
+        return db.from('user_projects')
+        .where('id', id)
+        .delete()
     }
 }
 
