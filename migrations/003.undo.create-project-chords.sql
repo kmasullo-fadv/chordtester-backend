@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS user_chords;
+DROP TABLE IF EXISTS project_chords;
