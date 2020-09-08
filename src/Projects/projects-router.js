@@ -31,44 +31,66 @@ projectsRouter
         .catch(next);
     });
 
-    projectsRouter
-        .route('/projects/:id')
-        .get(requireAuth, (req, res, next) => {
-            projectsService.getProjectById(
-                req.app.get('db'),
-                req.user.username,
-                req.params.id
-            )
-            .then(chords => {
-                res.json(chords.map(chord => ({
-                    ...chord,
-                    notes: JSON.parse(chord.notes)
-                })))
-            })
-            .catch(next)
+projectsRouter
+    .route('/projects/:id')
+    .get(requireAuth, (req, res, next) => {
+        projectsService.getProjectById(
+            req.app.get('db'),
+            req.user.username,
+            req.params.id
+        )
+        .then(chords => {
+            res.json(chords.map(chord => ({
+                ...chord,
+                notes: JSON.parse(chord.notes)
+            })))
         })
-        .post(requireAuth, jsonParser, (req, res, next) => {
-            const { project_id, notes, name } = req.body;
-            const notesJson = JSON.stringify(notes)
-            const details = { project_id, notes: notesJson, name };
-            projectsService.addChordtoProject(
-                req.app.get('db'),
-                req.user.username,
-                details
-            )
-            .then(project => {
-                res.json(project)
-            })
-            .catch(next)
+        .catch(next)
+    })
+    .post(requireAuth, jsonParser, (req, res, next) => {
+        const { project_id, notes, name } = req.body;
+        const notesJson = JSON.stringify(notes)
+        const details = { project_id, notes: notesJson, name };
+        projectsService.addChordtoProject(
+            req.app.get('db'),
+            req.user.username,
+            details
+        )
+        .then(project => {
+            res.json(project)
         })
-        .delete(requireAuth, (req,res, next) => {
-            projectsService.deleteProjectById(
-                req.app.get('db'),
-                req.params.id
-            )
-            .then(res.status(204).end())
-            .catch(next)
+        .catch(next)
+    })
+    .delete(requireAuth, (req,res, next) => {
+        projectsService.deleteProjectById(
+            req.app.get('db'),
+            req.params.id
+        )
+        .then(res.status(204).end())
+        .catch(next)
+    });
+
+projectsRouter
+    .route('/chords/:id')
+    .get(requireAuth, (req, res, next) => {
+        projectsService.getChordById(
+            req.app.get('db'),
+            req.params.id
+        )
+        .then(chord => {
+            res.json({...chord, notes: JSON.parse(chord.notes)})
         })
+        .catch(next)
+    })
+    .delete(requireAuth, (req, res, next) => {
+        projectsService.deleteChordById(
+            req.app.get('db'),
+            req.params.id
+        )
+        .then(res.status(204).end())
+        .catch(next)
+    })
+   
 
 
 module.exports = projectsRouter;

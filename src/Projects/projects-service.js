@@ -35,6 +35,15 @@ const projectsService = {
         return db.from('user_projects')
         .where('id', id)
         .delete()
+    },
+    getChordById (db, id) {
+        return db.from('project_chords')
+        .where('id', id)
+    },
+    deleteChordById (db, id) {
+        return db.from('project_chords')
+        .where('id', id)
+        .delete()
     }
 }
 
