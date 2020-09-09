@@ -6,6 +6,7 @@ const { NODE_ENV } = require('./config')
 const authRouter = require('./auth/auth-router')
 const projectsRouter = require('./Projects/projects-router')
 const usersRouter = require('./users/users-router');
+const PORT = process.env.PORT || 8000
 
 const app = express()
 
@@ -20,7 +21,7 @@ app.use('/api/auth', authRouter)
 app.use('/api', projectsRouter)
 app.use('/api/users', usersRouter)
 
-app.use(function errorHandler(error, req, res, next) {
+app.use((error, req, res, next) => {
    let response
    if (NODE_ENV === 'production') {
     response = { error: { message: 'server error' } }
