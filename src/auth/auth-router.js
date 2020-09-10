@@ -6,7 +6,6 @@ const jsonBodyParser = express.json();
 authRouter
 .post('/login', jsonBodyParser, (req, res, next) => {
     const { username, password } = req.body;
-    username = username.toLowerCase();
     const loginUser = { username, password };
 
     for(const [key, value] of Object.entries(loginUser)) {
