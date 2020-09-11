@@ -49,20 +49,20 @@ function makeChordsArray(projects) {
         {
             id: 1,
             name: 'E',
-            project_id: projects[0].id,
-            notes: ["le0","a2","d2","g1","b0","he0"]
+            notes: JSON.stringify(["le0","a2","d2","g1","b0","he0"]),
+            project_id: projects[0].id
         },
         {
             id: 2,
             name: 'E',
-            project_id: projects[1].id,
-            notes: ["le0","a2","d2","g1","b0","he0"]
+            notes: JSON.stringify(["le0","a2","d2","g1","b0","he0"]),
+            project_id: projects[1].id
         },
         {
             id: 3,
             name: 'E',
+            notes: JSON.stringify(["le0","a2","d2","g1","b0","he0"]),
             project_id: projects[2].id,
-            notes: ["le0","a2","d2","g1","b0","he0"]
         }
     ]
 }
@@ -102,18 +102,19 @@ function seedTables(db, users, projects, chords) {
     return db.transaction(async trx => {
         await trx.into('chordtester_users').insert(users);
         await trx.into('user_projects').insert(projects);
+        await trx.into('project_chords').insert(chords)
 
         await Promise.all([
             trx.raw(
-                `SELECT setval(chordtester_users_id_seq, ?)`,
+                `SELECT setval('chordtester_users_id_seq', ?)`,
                 [users[users.length-1].id],
             ),
             trx.raw(
-                `SELECT setval(user_projects_id_seq, ?)`,
+                `SELECT setval('user_projects_id_seq', ?)`,
                 [projects[projects.length-1].id],
             ),
             trx.raw(
-                `SELECT setval(project_chords_id_seq, ?)`,
+                `SELECT setval('project_chords_id_seq', ?)`,
                 [chords[chords.length-1].id],
             ),
         ]);

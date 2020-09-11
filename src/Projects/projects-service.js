@@ -8,7 +8,6 @@ const projectsService = {
     getProjectById (db, username, id) {
         return db.from('project_chords')
         .where('project_chords.project_id', id)
-        
     },
     addProject (db, username, title) {
         return db
